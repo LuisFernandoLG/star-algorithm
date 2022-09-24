@@ -1,0 +1,33 @@
+html{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container{
+  display: grid;
+  place-items: center;
+}
+
+.square{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  background: #5e5e5e;
+}
+
+.row{
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cell{
+  border: 2px solid #000;
+  background: #000;
+  padding: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.zero{
+  color:red;
+}
