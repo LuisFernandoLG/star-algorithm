@@ -8,6 +8,8 @@ const cell7 = document.querySelector(".cell-7");
 const cell8 = document.querySelector(".cell-8");
 const cell9 = document.querySelector(".cell-9");
 
+const fnSelect = document.getElementById("fns");
+
 /*
 SOLUCIONABLES 
 [1, 2, 0],
@@ -22,9 +24,6 @@ SOLUCIONABLES
 [4, 5, 6],
 [0, 7, 8],
 
-[1, 2, 5],
-[3, 4, 0],
-[6, 7, 8],
 
 [1, 2, 3],
 [0, 5, 6],
@@ -43,12 +42,9 @@ SOLUCIONABLES
 */
 
 let initialState = [
-  // [1, 2, 3],
-  // [0, 4, 6],
-  // [7, 5, 8],
-  [2, 8, 3],
-  [1, 6, 4],
-  [7, 0, 5],
+  [1, 2, 3],
+  [0, 4, 6],
+  [7, 5, 8],
 ];
 
 const finalState = [
@@ -79,17 +75,6 @@ const fn1 = (value, state3) => {
 
   return heuristic;
 };
-
-// const removeVisitedNode = (visitedNode, state5)=>{
-//   const stateCopy = JSON.parse(JSON.stringify(state4));
-
-//   for (let col = 0; col <= len; col++) {
-//     for (let row = 0; row <= len; row++) {
-//       if(col)
-//     }
-//   }
-
-// }
 
 // Distancias
 const fn2 = (value, state3) => {
@@ -176,14 +161,27 @@ function sortByheuristic(arr) {
   return arr.sort((a, b) => a.heuristic - b.heuristic);
 }
 
-const getBetterMove = (moves, state2) => {
-  const xmoves = moves.map((move) => ({
-    move,
-    heuristic:
-      fn1(state2[move.col][move.row], [...state2]) +
-      fn2(state2[move.col][move.row], [...state2]),
-  }));
+const fnTypes = {
+  F1: "F1",
+  F2: "F2",
+  BOTH: "Ambos",
+};
 
+const getBetterMove = (moves, state2) => {
+  const xmoves = moves.map((move) => {
+    const fnSelected = fnSelect.options[fnSelect.selectedIndex].value;
+    let heuristic = 0;
+    if (fnTypes.F1 === fnSelected || fnSelected === fnTypes.BOTH) {
+      const _fn1 = fn1(state2[move.col][move.row], [...state2]);
+      heuristic += _fn1;
+    }
+    if (fnSelected === fnTypes.F2 || fnSelected === fnTypes.BOTH) {
+      const _fn2 = fn2(state2[move.col][move.row], [...state2]);
+      heuristic += _fn2;
+    }
+
+    return { move, heuristic };
+  });
   const orderedMoves = sortByheuristic(xmoves);
   return orderedMoves[0].move;
 };
@@ -332,18 +330,37 @@ solveBtn.addEventListener("click", () => {
 });
 
 shuffleBtn.addEventListener("click", () => {
-  shuffleNumbers();
+  initialState = getRandomPuzzle();
+  loadNumbersToHtml(initialState);
 });
 
-const shuffleNumbers = () => {
-  initialState[0] = shuffledArray(initialState[0]);
-
-  initialState[1] = shuffledArray(initialState[1]);
-  initialState[2] = shuffledArray(initialState[2]);
-
-  loadNumbersToHtml(initialState);
-};
-
-const shuffledArray = (array) => {
-  return array.sort((a, b) => 0.5 - Math.random());
+const getRandomPuzzle = () => {
+  const possiblePuzzles = [
+    [
+      [1, 2, 0],
+      [4, 5, 3],
+      [7, 8, 6],
+    ],
+    [
+      [1, 2, 3],
+      [4, 0, 6],
+      [7, 5, 8],
+    ],
+    [
+      [1, 2, 3],
+      [4, 5, 6],
+      [0, 7, 8],
+    ],
+    [
+      [1, 2, 3],
+      [0, 5, 6],
+      [4, 7, 8],
+    ],
+    [
+      [1, 2, 3],
+      [0, 4, 6],
+      [7, 5, 8],
+    ],
+  ];
+  return possiblePuzzles[Math.floor(Math.random() * possiblePuzzles.length)];
 };

@@ -7,12 +7,22 @@ html{
   place-items: center;
 }
 
+.titles{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 .square{
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 
-  background: #5e5e5e;
+  background: #fff;
+  border: 2px solid #6F38C5;
+  padding: 1rem;
+  
 }
 
 .row{
@@ -21,13 +31,27 @@ html{
 }
 
 .cell{
-  border: 2px solid #000;
-  background: #000;
+  border: 2px solid #6F38C5;
+  background: #6F38C5;
   padding: 1rem;
   font-weight: 500;
   color: #ffffff;
 }
 
 .zero{
-  color:red;
+  border: 2px dotted #6F38C5;
+  background: #fff;
+  color:#000;
+}
+
+.btns{
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:1rem;
+}
+
+button{
+  padding:0.5rem 1rem;
 }
