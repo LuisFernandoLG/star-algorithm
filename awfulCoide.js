@@ -370,9 +370,6 @@ class StarAlgorithm {
   }
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 const loadNumbersToHtml = (array) => {
   cell1.textContent = array[0][0];

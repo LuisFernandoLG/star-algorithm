@@ -35,16 +35,16 @@ SOLUCIONABLES
 [7, 5, 8],
 
 // NO 
-[2, 8, 3],
-[1, 6, 4],
-[7, 0, 5],
 
 */
 
 let initialState = [
-  [1, 2, 3],
-  [0, 4, 6],
-  [7, 5, 8],
+  // [1, 2, 3],
+  // [0, 4, 6],
+  // [7, 5, 8],
+  [2, 3, 7],
+  [0, 6, 4],
+  [1, 5, 8],
 ];
 
 const finalState = [
@@ -168,6 +168,7 @@ const fnTypes = {
 };
 
 const getBetterMove = (moves, state2) => {
+  
   const xmoves = moves.map((move) => {
     const fnSelected = fnSelect.options[fnSelect.selectedIndex].value;
     let heuristic = 0;
@@ -182,6 +183,8 @@ const getBetterMove = (moves, state2) => {
 
     return { move, heuristic };
   });
+  
+  
   const orderedMoves = sortByheuristic(xmoves);
   return orderedMoves[0].move;
 };
@@ -203,7 +206,7 @@ const exchangeValues = (initPosition, destination, state4) => {
 };
 
 // REMOVE LAS CHILD AND I'd be DONE, I THINK SO
-const removeLastMove = (L1, move2, L2) => {
+const removeLastMove = (L1, move2) => {
   console.log({ previousMove: move2 });
   const cleanMoves = L1.filter((move) => {
     isDifferent = move.col !== move2.col || move.row !== move2.row;
@@ -216,17 +219,32 @@ const removeLastMove = (L1, move2, L2) => {
   return cleanMoves;
 };
 
+// NOTAS
+// TOMAR EL ÚLTIMO VALOR DE L1
+// Tomar el de menor heuristica 
+
+// Criterios
+// No lo agregará si ya existe en la lista L2.
+
+// PASO 8
+// -------------------------------------------------
+// Si el nuevo movimiento o estado ya se encuentra en ambas listas. no agregarlo
+// El nuevo movimiento puede ya estar, pero con diferente padre.
+// Paso 8, son los criterios
+
+
+// {Guardar estados} y comparar si ya se visitó.
+
+
 const solve = async (x, L1, L2) => {
   const currentZeroPosition = getInitialPosition([...x]);
   L2.push(currentZeroPosition);
   loadNumbersToHtml(x);
 
   if (isFinalState(x)) {
-    console.log("FINAL-----------");
     return { L1, L2, x };
   } else {
     L1.push(...getPossibleMoves(currentZeroPosition, x));
-    console.log({ moves: L1 });
 
     if (L2.at(-2)) {
       L1 = removeLastMove(L1, L2.at(-2), L2);
@@ -238,9 +256,9 @@ const solve = async (x, L1, L2) => {
     const betterMove = getBetterMove(L1, x);
     console.log({ betterMove });
     L1 = removeNodeFromList(betterMove.x, betterMove.y, L1);
+    
     const newState = [...exchangeValues(currentZeroPosition, betterMove, x)];
-    // await sleep(20000);
-    await sleep(1000);
+    await sleep(2000);
     console.log("-----------------------------------------------------------");
     return solve(newState, L1, L2);
   }
@@ -364,3 +382,6 @@ const getRandomPuzzle = () => {
   ];
   return possiblePuzzles[Math.floor(Math.random() * possiblePuzzles.length)];
 };
+
+
+// EXISTEN PUZZLES SIN SOLUCIÓN :0
