@@ -55,3 +55,8 @@ html{
 button{
   padding:0.5rem 1rem;
 }
+
+.L2{
+  display: flex;
+  flex-direction: column;
+}
